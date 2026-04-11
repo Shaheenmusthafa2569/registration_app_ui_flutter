@@ -49,25 +49,23 @@ class Mysignuppage extends StatelessWidget {
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
-                  Card(
-                    // elevation: 12,
-                    child: TextFormField(
-                      controller: username,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Username is Required";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        fillColor: const Color.fromARGB(255, 194, 252, 127),
-                        filled: true,
+                  TextFormField(
+                    controller: username,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Username is Required";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
                       ),
+                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      filled: true,
                     ),
                   ),
+
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -76,28 +74,26 @@ class Mysignuppage extends StatelessWidget {
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
-                  Card(
-                    // elevation: 12,
-                    child: TextFormField(
-                      controller: email,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Email is Required";
-                        }
-                        if (!value.contains("@") || !value.contains(".com")) {
-                          return "Enter a valid email";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        fillColor: const Color.fromARGB(255, 194, 252, 127),
-                        filled: true,
+                  TextFormField(
+                    controller: email,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Email is Required";
+                      }
+                      if (!value.contains("@") || !value.contains(".com")) {
+                        return "Enter a valid email";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
                       ),
+                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      filled: true,
                     ),
                   ),
+
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -106,27 +102,25 @@ class Mysignuppage extends StatelessWidget {
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
-                  Card(
-                    //elevation: 12,
-                    child: TextFormField(
-                      controller: password,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Enter the Passsword";
-                        }
-                        if (value.length > 6 || value.length < 6) {
-                          return "Password must be 6 characters";
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        fillColor: const Color.fromARGB(255, 194, 252, 127),
-                        filled: true,
+                  TextFormField(
+                    controller: password,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter the Passsword";
+                      }
+                      if (value.length > 6 || value.length < 6) {
+                        return "Password must be 6 characters";
+                      }
+                    },
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
                       ),
+                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      filled: true,
                     ),
                   ),
+
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -135,31 +129,28 @@ class Mysignuppage extends StatelessWidget {
                       style: TextStyle(fontSize: 15),
                     ),
                   ),
-                  Card(
-                    // elevation: 12,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Enter the Passsword";
-                        }
-                        if (value != password.text) {
-                          return "Password does not match";
-                        }
-                        return null;
-                      },
-                      controller: confirmpassword,
-                      decoration: InputDecoration(,
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: const Color.fromARGB(255, 162, 14, 255),
-                          ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Enter the Passsword";
+                      }
+                      if (value != password.text) {
+                        return "Password does not match";
+                      }
+                      return null;
+                    },
+                    controller: confirmpassword,
+                    decoration: InputDecoration(
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 162, 14, 255),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        fillColor: const Color.fromARGB(255, 194, 252, 127),
-                        filled: true,
                       ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      filled: true,
                     ),
                   ),
 
