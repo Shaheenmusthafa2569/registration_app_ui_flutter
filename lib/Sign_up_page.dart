@@ -2,11 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page/login.dart';
 
-class Mysignuppage extends StatelessWidget {
+class Mysignuppage extends StatefulWidget {
+  @override
+  State<Mysignuppage> createState() => _MysignuppageState();
+}
+
+class _MysignuppageState extends State<Mysignuppage> {
   final formkey = GlobalKey<FormState>();
+
+  bool visiblepassword = true;
+
+  bool visibleConfirmedpassword = true;
+
   TextEditingController username = TextEditingController();
+
   TextEditingController email = TextEditingController();
+
   TextEditingController password = TextEditingController();
+
   TextEditingController confirmpassword = TextEditingController();
 
   @override
@@ -103,6 +116,7 @@ class Mysignuppage extends StatelessWidget {
                     ),
                   ),
                   TextFormField(
+                    obscureText: visiblepassword,
                     controller: password,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -113,6 +127,16 @@ class Mysignuppage extends StatelessWidget {
                       }
                     },
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            visiblepassword = !visiblepassword;
+                          });
+                        },
+                        icon: visiblepassword
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -130,6 +154,7 @@ class Mysignuppage extends StatelessWidget {
                     ),
                   ),
                   TextFormField(
+                    obscureText: visibleConfirmedpassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter the Passsword";
@@ -141,6 +166,17 @@ class Mysignuppage extends StatelessWidget {
                     },
                     controller: confirmpassword,
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            visibleConfirmedpassword =
+                                !visibleConfirmedpassword;
+                          });
+                        },
+                        icon: visibleConfirmedpassword
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                      ),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: const Color.fromARGB(255, 162, 14, 255),

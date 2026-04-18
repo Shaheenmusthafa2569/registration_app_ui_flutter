@@ -3,12 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page/Sign_up_page.dart';
 import 'package:lottie/lottie.dart';
 
-class MyLoginpage extends StatelessWidget {
-  final formkeykey = GlobalKey<FormState>();
+class MyLoginpage extends StatefulWidget {
+  @override
+  State<MyLoginpage> createState() => _MyLoginpageState();
+}
 
+class _MyLoginpageState extends State<MyLoginpage> {
+  final formkeykey = GlobalKey<FormState>();
+  bool visible = true;
   @override
   TextEditingController email = TextEditingController();
+
   TextEditingController password = TextEditingController();
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 138, 209, 56),
@@ -61,6 +68,7 @@ class MyLoginpage extends StatelessWidget {
                   child: Text("Password", style: TextStyle(fontSize: 15)),
                 ),
                 TextFormField(
+                  obscureText: visible,
                   controller: password,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -71,6 +79,16 @@ class MyLoginpage extends StatelessWidget {
                     }
                   },
                   decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          visible = !visible;
+                        });
+                      },
+                      icon: visible
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -117,7 +135,9 @@ class MyLoginpage extends StatelessWidget {
                     ),
                   ],
                 ),
-                Flexible(child: Center(child: Lottie.asset("assets/login.json"))),
+                Flexible(
+                  child: Center(child: Lottie.asset("assets/login.json")),
+                ),
               ],
             ),
           ),
