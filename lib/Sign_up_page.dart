@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page/login.dart';
+import 'package:login_page/service.dart';
 
 class Mysignuppage extends StatefulWidget {
   @override
@@ -11,59 +12,55 @@ class _MysignuppageState extends State<Mysignuppage> {
   final formkey = GlobalKey<FormState>();
 
   bool visiblepassword = true;
-
   bool visibleConfirmedpassword = true;
 
   TextEditingController username = TextEditingController();
-
   TextEditingController email = TextEditingController();
-
   TextEditingController password = TextEditingController();
-
   TextEditingController confirmpassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 138, 209, 56),
-        body: Center(
+    // Removed Flexible from here as it's the top-level return
+    return Scaffold(
+      backgroundColor: const Color(0xFF0A192F),
+      body: Center(
+        child: SingleChildScrollView( // Added to prevent overflow on small screens
           child: Padding(
             padding: const EdgeInsets.all(55.0),
             child: Form(
               key: formkey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Sign up",
-                    style: GoogleFonts.arima(
-                      // fontStyle: FontStyle.italic,
-                      color: Colors.black,
-                      fontSize: 35,
+                    style: GoogleFonts.playfairDisplay( // Updated to playfairDisplay
+                      color: const Color(0xFFE6F1FF),
+                      fontSize: 45,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Create an account to enter",
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 32, 81, 30),
+                      color: Color(0xFF8892B0),
                       fontSize: 16,
-                      // fontStyle: FontStyle.italic,
-                      // fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
+                    child: const Text(
                       "Username",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
                     ),
                   ),
                   TextFormField(
                     controller: username,
+                    style: const TextStyle(color: Colors.white), // Input text color
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Username is Required";
@@ -74,21 +71,23 @@ class _MysignuppageState extends State<Mysignuppage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      fillColor: const Color(0xFF112240),
                       filled: true,
                     ),
                   ),
+                  const SizedBox(height: 15),
 
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
+                    child: const Text(
                       "Email",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
                     ),
                   ),
                   TextFormField(
                     controller: email,
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Email is Required";
@@ -102,29 +101,32 @@ class _MysignuppageState extends State<Mysignuppage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      fillColor: const Color(0xFF112240),
                       filled: true,
                     ),
                   ),
+                  const SizedBox(height: 15),
 
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
+                    child: const Text(
                       "Password",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
                     ),
                   ),
                   TextFormField(
                     obscureText: visiblepassword,
                     controller: password,
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter the Passsword";
                       }
-                      if (value.length > 6 || value.length < 6) {
+                      if (value.length != 6) {
                         return "Password must be 6 characters";
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -134,27 +136,30 @@ class _MysignuppageState extends State<Mysignuppage> {
                           });
                         },
                         icon: visiblepassword
-                            ? Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off),
+                            ? const Icon(Icons.visibility, color: Color(0xFF8892B0))
+                            : const Icon(Icons.visibility_off, color: Color(0xFF8892B0)),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      fillColor: const Color(0xFF112240),
                       filled: true,
                     ),
                   ),
+                  const SizedBox(height: 15),
 
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text(
+                    child: const Text(
                       "Confirm Password",
                       textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15),
+                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
                     ),
                   ),
                   TextFormField(
                     obscureText: visibleConfirmedpassword,
+                    controller: confirmpassword,
+                    style: const TextStyle(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Enter the Passsword";
@@ -164,54 +169,65 @@ class _MysignuppageState extends State<Mysignuppage> {
                       }
                       return null;
                     },
-                    controller: confirmpassword,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
-                            visibleConfirmedpassword =
-                                !visibleConfirmedpassword;
+                            visibleConfirmedpassword = !visibleConfirmedpassword;
                           });
                         },
                         icon: visibleConfirmedpassword
-                            ? Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: const Color.fromARGB(255, 162, 14, 255),
-                        ),
+                            ? const Icon(Icons.visibility, color: Color(0xFF8892B0))
+                            : const Icon(Icons.visibility_off, color: Color(0xFF8892B0)),
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      fillColor: const Color.fromARGB(255, 194, 252, 127),
+                      fillColor: const Color(0xFF112240),
                       filled: true,
                     ),
                   ),
 
-                  SizedBox(height: 35),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (formkey.currentState!.validate()) {
-                        print("valid");
-                      }
-                    },
-                    child: Text("Sign up"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 180, 42, 222),
-                      foregroundColor: Colors.black,
-                      side: BorderSide(color: Colors.black, width: 0.7),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  const SizedBox(height: 35),
+                  SizedBox(
+                    width: double.infinity, // Button spans width
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formkey.currentState!.validate()) {
+                          Signup(
+                            username.text,
+                            email.text,
+                            password.text,
+                            context,
+                          );
+                        }
+                      },
+                      child: Text(
+                        "Sign up",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFD4AF37), // Deep Gold
+                        foregroundColor: const Color(0xFF0A192F), // Midnight Navy text
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
 
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have an account? "),
+                      const Text(
+                        "Already have an account? ",
+                        style: TextStyle(color: Color(0xFF8892B0)),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -221,9 +237,12 @@ class _MysignuppageState extends State<Mysignuppage> {
                             ),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "Login",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, 
+                            color: Color(0xFF8892B0),
+                          ),
                         ),
                       ),
                     ],
