@@ -18,14 +18,13 @@ class Myprofilepage extends StatefulWidget {
   State<Myprofilepage> createState() => _MyprofilepageState();
 }
 
-class _MyprofilepageState extends State<Myprofilepage> { String? imageurl;
+class _MyprofilepageState extends State<Myprofilepage> {
+  String? imageurl;
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  
-  @override
- 
 
+  @override
   Widget build(BuildContext context) {
     // ONLY COLORS + FONTS CHANGED
 

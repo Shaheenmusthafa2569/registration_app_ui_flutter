@@ -180,13 +180,7 @@ class _MysignuppageState extends State<Mysignuppage> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
-                          Signup(
-                            username.text,
-                            email.text.trim(),
-                            password.text,
-                            imageurl!,
-                            context,
-                          );
+                          Signup(imageurl!, username.text, email.text, password.text, context);
                         }
                       },
                       child: Text(
@@ -265,8 +259,13 @@ class _MysignuppageState extends State<Mysignuppage> {
               return "$label is required";
             }
             if (label == "Email") {
-              
+              String emailValue = value.trim();
+
+              if (!emailValue.contains("@") || !emailValue.contains(".")) {
+                return "Enter a valid email";
+              }
             }
+            return null;
           },
           decoration: InputDecoration(
             filled: true,
