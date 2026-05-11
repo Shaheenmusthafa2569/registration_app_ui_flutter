@@ -14,67 +14,83 @@ class _MyforgotpasswordState extends State<Myforgotpassword> {
 
   @override
   Widget build(BuildContext context) {
+    // ONLY COLORS + FONTS CHANGED
+
     return Scaffold(
-      // Match the dark theme background
-      backgroundColor: const Color(0xFF0A192F),
+      backgroundColor: const Color(0xFF0B0F19),
+
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A192F),
+        backgroundColor: const Color(0xFF0B0F19),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFFE6F1FF)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
+
+            /// Title
             Text(
               "Find your account",
-              style: GoogleFonts.playfairDisplay(
-                fontSize: 35,
+              style: GoogleFonts.poppins(
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFFE6F1FF),
+                color: Colors.white,
               ),
             ),
+
             const SizedBox(height: 10),
+
+            /// Subtitle
             Text(
               "Enter your email",
               style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: const Color(0xFF8892B0),
+                fontSize: 15,
+                color: const Color(0xFF94A3B8),
               ),
             ),
+
             const SizedBox(height: 30),
+
+            /// Email Field
             TextField(
               controller: email,
-              style: const TextStyle(color: Colors.white),
+              style: GoogleFonts.poppins(color: Colors.white),
               decoration: InputDecoration(
                 hintText: "example@gmail.com",
-                hintStyle: const TextStyle(color: Color(0xFF495670)),
-                fillColor: const Color(0xFF112240),
+                hintStyle: const TextStyle(color: Color(0xFF6B7280)),
                 filled: true,
+                fillColor: const Color(0xFF111827),
                 border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide.none,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF1F2937)),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
                 focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide(color: Color(0xFFD4AF37), width: 1),
+                  borderSide: BorderSide(color: Color(0xFF6366F1), width: 1.5),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                 ),
               ),
             ),
+
             const SizedBox(height: 40),
+
+            /// Button
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD4AF37), // Deep Gold
-                  foregroundColor: const Color(0xFF0A192F), // Midnight Navy text
+                  backgroundColor: const Color(0xFF6366F1),
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  elevation: 2,
                 ),
                 onPressed: () {
                   Forgot(email.text, context);
@@ -82,9 +98,8 @@ class _MyforgotpasswordState extends State<Myforgotpassword> {
                 child: Text(
                   "Send code",
                   style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
                   ),
                 ),
               ),

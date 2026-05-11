@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:login_page/Sign_up_page.dart';
 import 'package:login_page/firebase_options.dart';
 import 'package:login_page/login.dart';
+import 'package:login_page/profile.dart';
 // import 'package:login_page/Sign_up_page.dart';
 import 'package:login_page/splash_screen.dart';
 
-void main()async {await Firebase.initializeApp(
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
 );
   runApp(const MyApp());
@@ -18,6 +21,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Mysignuppage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: Mysplash());
   }
 }

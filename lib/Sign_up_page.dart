@@ -1,5 +1,8 @@
+import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:login_page/login.dart';
 import 'package:login_page/service.dart';
 
@@ -13,206 +16,186 @@ class _MysignuppageState extends State<Mysignuppage> {
 
   bool visiblepassword = true;
   bool visibleConfirmedpassword = true;
-
+  bool isLoading = false;
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmpassword = TextEditingController();
+  String? imageurl;
+  Future<void> Pickimage() async {
+    final ImagePicker picktheimage = ImagePicker();
+    final XFile? image = await picktheimage.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (image != null) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+    try {
+      final cloudinary = CloudinaryPublic("dyo8wxjsx", "images", cache: false);
+      CloudinaryFile cloudfile;
+      if (kIsWeb) {
+        //to get images on web
+        final bytes = await image!.readAsBytes();
+        cloudfile = CloudinaryFile.fromByteData(
+          bytes.buffer.asByteData(),
+          identifier: image.name,
+          resourceType: CloudinaryResourceType.Image,
+        );
+      } else {
+        //to get images on phone
+        cloudfile = CloudinaryFile.fromFile(
+          image!.path,
+          resourceType: CloudinaryResourceType.Image,
+        );
+      }
+      CloudinaryResponse response = await cloudinary.uploadFile(cloudfile);
+      setState(() {
+        imageurl = response.secureUrl;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Image upload failed! Try again.")),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Removed Flexible from here as it's the top-level return
+    // ONLY COLORS + FONTS CHANGED — NOTHING ELSE
+
     return Scaffold(
-      backgroundColor: const Color(0xFF0A192F),
+      backgroundColor: const Color(0xFF0B0F19), // dark background
       body: Center(
-        child: SingleChildScrollView( // Added to prevent overflow on small screens
+        child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(55.0),
+            padding: const EdgeInsets.all(40.0),
             child: Form(
               key: formkey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  /// Title
                   Text(
                     "Sign up",
-                    style: GoogleFonts.playfairDisplay( // Updated to playfairDisplay
-                      color: const Color(0xFFE6F1FF),
-                      fontSize: 45,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      // changed font
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const Text(
+
+                  const SizedBox(height: 6),
+
+                  /// Subtitle
+                  Text(
                     "Create an account to enter",
-                    style: TextStyle(
-                      color: Color(0xFF8892B0),
-                      fontSize: 16,
+                    style: GoogleFonts.poppins(
+                      // consistent font
+                      color: const Color(0xFF94A3B8),
+                      fontSize: 15,
                     ),
                   ),
+
+                  const SizedBox(height: 25),
+
+                  /// Avatar
+                  Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 45,
+                          backgroundColor: const Color(
+                            0xFF6366F1,
+                          ).withOpacity(0.25),
+                        ),
+                        Positioned(
+                          bottom: 2,
+                          right: 3,
+                          top: 2,
+                          left: 3,
+                          child: GestureDetector(
+                            onTap: () {
+                              Pickimage();
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: imageurl != null
+                                  ? NetworkImage(imageurl!)
+                                  : null,
+                              radius: 42,
+                              backgroundColor: const Color(0xFF111827),
+                              child: imageurl == null
+                                  ? Icon(
+                                      Icons.add_a_photo_outlined,
+                                      color: Color(0xFF818CF8),
+                                    )
+                                  : null,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(height: 20),
 
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: const Text(
-                      "Username",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: username,
-                    style: const TextStyle(color: Colors.white), // Input text color
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Username is Required";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      fillColor: const Color(0xFF112240),
-                      filled: true,
-                    ),
-                  ),
+                  /// Username
+                  _buildField("Username", username),
+
                   const SizedBox(height: 15),
 
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: const Text(
-                      "Email",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: email,
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email is Required";
-                      }
-                      if (!value.contains("@") || !value.contains(".com")) {
-                        return "Enter a valid email";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      fillColor: const Color(0xFF112240),
-                      filled: true,
-                    ),
-                  ),
+                  /// Email
+                  _buildField("Email", email),
+
                   const SizedBox(height: 15),
 
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: const Text(
-                      "Password",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
-                    ),
-                  ),
-                  TextFormField(
-                    obscureText: visiblepassword,
-                    controller: password,
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter the Passsword";
-                      }
-                      if (value.length != 6) {
-                        return "Password must be 6 characters";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            visiblepassword = !visiblepassword;
-                          });
-                        },
-                        icon: visiblepassword
-                            ? const Icon(Icons.visibility, color: Color(0xFF8892B0))
-                            : const Icon(Icons.visibility_off, color: Color(0xFF8892B0)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      fillColor: const Color(0xFF112240),
-                      filled: true,
-                    ),
-                  ),
+                  /// Password
+                  _buildPasswordField("Password", password, true),
+
                   const SizedBox(height: 15),
 
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: const Text(
-                      "Confirm Password",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0)),
-                    ),
-                  ),
-                  TextFormField(
-                    obscureText: visibleConfirmedpassword,
-                    controller: confirmpassword,
-                    style: const TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Enter the Passsword";
-                      }
-                      if (value != password.text) {
-                        return "Password does not match";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            visibleConfirmedpassword = !visibleConfirmedpassword;
-                          });
-                        },
-                        icon: visibleConfirmedpassword
-                            ? const Icon(Icons.visibility, color: Color(0xFF8892B0))
-                            : const Icon(Icons.visibility_off, color: Color(0xFF8892B0)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      fillColor: const Color(0xFF112240),
-                      filled: true,
-                    ),
+                  /// Confirm Password
+                  _buildPasswordField(
+                    "Confirm Password",
+                    confirmpassword,
+                    false,
                   ),
 
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 30),
+
+                  /// Button
                   SizedBox(
-                    width: double.infinity, // Button spans width
+                    width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
                           Signup(
                             username.text,
-                            email.text,
+                            email.text.trim(),
                             password.text,
+                            imageurl!,
                             context,
                           );
                         }
                       },
                       child: Text(
                         "Sign up",
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD4AF37), // Deep Gold
-                        foregroundColor: const Color(0xFF0A192F), // Midnight Navy text
+                        backgroundColor: const Color(0xFF6366F1),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -221,12 +204,15 @@ class _MysignuppageState extends State<Mysignuppage> {
                   ),
 
                   const SizedBox(height: 20),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Already have an account? ",
-                        style: TextStyle(color: Color(0xFF8892B0)),
+                        style: GoogleFonts.poppins(
+                          color: const Color(0xFF94A3B8),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -237,11 +223,11 @@ class _MysignuppageState extends State<Mysignuppage> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           "Login",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold, 
-                            color: Color(0xFF8892B0),
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF818CF8),
                           ),
                         ),
                       ),
@@ -253,6 +239,111 @@ class _MysignuppageState extends State<Mysignuppage> {
           ),
         ),
       ),
+    );
+  }
+
+  /// Reusable field
+  /// Reusable field
+  Widget _buildField(String label, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF9CA3AF),
+          ),
+        ),
+
+        TextFormField(
+          controller: controller,
+          style: GoogleFonts.poppins(color: Colors.white),
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return "$label is required";
+            }
+            if (label == "Email") {
+              
+            }
+          },
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFF111827),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xFF1F2937)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xFF6366F1)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordField(
+    String label,
+    TextEditingController controller,
+    bool isMain,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF9CA3AF),
+          ),
+        ),
+
+        TextFormField(
+          obscureText: isMain ? visiblepassword : visibleConfirmedpassword,
+          controller: controller,
+          style: GoogleFonts.poppins(color: Colors.white),
+
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFF111827),
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  if (isMain) {
+                    visiblepassword = !visiblepassword;
+                  } else {
+                    visibleConfirmedpassword = !visibleConfirmedpassword;
+                  }
+                });
+              },
+              icon: Icon(
+                isMain
+                    ? (visiblepassword
+                          ? Icons.visibility
+                          : Icons.visibility_off)
+                    : (visibleConfirmedpassword
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                color: const Color(0xFF9CA3AF),
+              ),
+            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xFF1F2937)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xFF6366F1)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

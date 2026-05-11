@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page/Sign_up_page.dart';
 import 'package:login_page/forgotpassword.dart';
 import 'package:login_page/service.dart';
-// import 'package:lottie/lottie.dart'; // Animation removed
 
 class MyLoginpage extends StatefulWidget {
   @override
@@ -13,51 +12,64 @@ class MyLoginpage extends StatefulWidget {
 class _MyLoginpageState extends State<MyLoginpage> {
   final formkeykey = GlobalKey<FormState>();
   bool visible = true;
-  
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // ONLY COLORS + FONTS CHANGED
+
     return Scaffold(
-      // Match Signup Background: Midnight Navy
-      backgroundColor: const Color(0xFF0A192F), 
+      backgroundColor: const Color(0xFF0B0F19),
+
       body: Padding(
-        padding: const EdgeInsets.all(55.0),
+        padding: const EdgeInsets.all(40.0),
         child: Center(
-          child: SingleChildScrollView( // Added scroll to prevent overflow
+          child: SingleChildScrollView(
             child: Form(
               key: formkeykey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  /// Title
                   Text(
                     "Login",
-                    style: GoogleFonts.playfairDisplay( // Match Signup Font
-                      fontSize: 45,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFFE6F1FF),
+                    style: GoogleFonts.poppins(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
                   ),
+
+                  const SizedBox(height: 6),
+
+                  /// Subtitle
                   Text(
                     "Login to your account",
-                    style: GoogleFonts.poppins( // Match Signup Body Font
-                      fontSize: 16,
-                      color: const Color(0xFF8892B0),
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      color: const Color(0xFF94A3B8),
                     ),
                   ),
+
                   const SizedBox(height: 30),
-                  
+
+                  /// Email
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Email", 
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0))
+                      "Email",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF9CA3AF),
+                      ),
                     ),
                   ),
                   TextFormField(
                     controller: email,
-                    style: const TextStyle(color: Colors.white),
+                    style: GoogleFonts.poppins(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Email is Required";
@@ -68,27 +80,40 @@ class _MyLoginpageState extends State<MyLoginpage> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      fillColor: const Color(0xFF112240), // Match Signup Input Color
                       filled: true,
+                      fillColor: const Color(0xFF111827),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFF1F2937)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFF6366F1)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 15),
-                  
+
+                  /// Password
                   Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "Password", 
-                      style: TextStyle(fontSize: 15, color: Color(0xFF8892B0))
+                      "Password",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF9CA3AF),
+                      ),
                     ),
                   ),
                   TextFormField(
                     obscureText: visible,
                     controller: password,
-                    style: const TextStyle(color: Colors.white),
+                    style: GoogleFonts.poppins(color: Colors.white),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Password is required";
@@ -99,28 +124,38 @@ class _MyLoginpageState extends State<MyLoginpage> {
                       return null;
                     },
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFF111827),
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
                             visible = !visible;
                           });
                         },
-                        icon: visible
-                            ? const Icon(Icons.visibility, color: Color(0xFF8892B0))
-                            : const Icon(Icons.visibility_off, color: Color(0xFF8892B0)),
+                        icon: Icon(
+                          visible ? Icons.visibility : Icons.visibility_off,
+                          color: const Color(0xFF9CA3AF),
+                        ),
                       ),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      fillColor: const Color(0xFF112240),
-                      filled: true,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFF1F2937)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFF6366F1)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 35),
-                  
+
+                  /// Login Button
                   SizedBox(
-                    width: double.infinity, // Set to match button width style
+                    width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
@@ -129,43 +164,49 @@ class _MyLoginpageState extends State<MyLoginpage> {
                         }
                       },
                       child: Text(
-                        "Login", 
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        )
+                        "Login",
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD4AF37), // Deep Gold
-                        foregroundColor: const Color(0xFF0A192F), // Dark Navy text
+                        backgroundColor: const Color(0xFF6366F1),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
+
+                  /// Forgot Password
                   GestureDetector(
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Myforgotpassword()),
+                      MaterialPageRoute(
+                        builder: (context) => Myforgotpassword(),
+                      ),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Forgot password?",
-                      style: TextStyle(color: Color(0xFF8892B0), decoration: TextDecoration.underline),
+                      style: GoogleFonts.poppins(
+                        color: const Color(0xFF94A3B8),
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 15),
-                  
+
+                  /// Signup
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Don't have an account? ",
-                        style: TextStyle(color: Color(0xFF8892B0)),
+                        style: GoogleFonts.poppins(
+                          color: const Color(0xFF94A3B8),
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -176,23 +217,16 @@ class _MyLoginpageState extends State<MyLoginpage> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           "Sign up",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold, 
-                            color: Color(0xFF8892B0)
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF818CF8),
                           ),
                         ),
                       ),
                     ],
                   ),
-
-                  // Animation removed using comments as requested
-                  /*
-                  Flexible(
-                    child: Center(child: Lottie.asset("assets/login.json")),
-                  ),
-                  */
                 ],
               ),
             ),
