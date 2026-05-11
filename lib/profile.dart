@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_page/login.dart';
@@ -23,6 +25,40 @@ class _MyprofilepageState extends State<Myprofilepage> {
   TextEditingController username = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    username.text = widget.username;
+    email.text = widget.email;
+    password.text = widget.password;
+  }
+
+  Future<void> UpdateDetails() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+
+      await FirebaseFirestore.instance.collection("datas").doc(uid).update({
+        'Name': username.text,
+        'Password': password.text,
+        'Image': imageurl!,
+      });
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Successfully Updated!")));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,16 +103,21 @@ class _MyprofilepageState extends State<Myprofilepage> {
                     child: GestureDetector(
                       onTap: () {},
                       child: CircleAvatar(
-                        backgroundImage: imageurl != null
-                            ? NetworkImage(imageurl!)
+                        backgroundImage:
+                            (widget.imageurl.isNotEmpty &&
+                                widget.imageurl != "No Image")
+                            ? NetworkImage(widget.imageurl)
                             : null,
-
                         radius: 54,
                         backgroundColor: const Color(0xFF111827),
-                        child: const Icon(
-                          Icons.add_a_photo_outlined,
-                          color: Color(0xFF818CF8),
-                        ),
+                        child:
+                            (widget.imageurl.isEmpty ||
+                                widget.imageurl == "No Image")
+                            ? Icon(
+                                Icons.add_a_photo_outlined,
+                                color: Color(0xFF818CF8),
+                              )
+                            : null,
                       ),
                     ),
                   ),
@@ -99,6 +140,7 @@ class _MyprofilepageState extends State<Myprofilepage> {
               ),
             ),
             TextFormField(
+              readOnly: true,
               controller: email,
               style: GoogleFonts.poppins(color: Colors.white),
               decoration: InputDecoration(
@@ -185,7 +227,27 @@ class _MyprofilepageState extends State<Myprofilepage> {
                 ),
               ),
             ),
-
+            const SizedBox(height: 25),
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6366F1),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  UpdateDetails();
+                },
+                child: Text(
+                  "Edit",
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
             const SizedBox(height: 25),
 
             /// Logout Button
